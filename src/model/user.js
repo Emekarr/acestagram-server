@@ -1,4 +1,4 @@
-const { Schema } = require("mongoose");
+const { Schema, model } = require("mongoose");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
@@ -7,10 +7,12 @@ const userSchema = Schema({
     type: String,
     required: true,
     trim: true,
+    unique: true,
   },
   email: {
     type: String,
     required: true,
+    unique: true,
     trim: true,
     validate(value) {
       const validateEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -32,7 +34,7 @@ const userSchema = Schema({
   ],
 });
 
-userSchema.methods.generateToken = async function () {
+userSchema.methods.generate_token = async function () {
   const token = jwt.sign({ id: this._id }, process.env.JWT_KEY);
   this.tokens.push({ token });
   await this.save();
