@@ -1,7 +1,9 @@
 const express = require("express");
-
 // initialise server
 const server = express();
+
+//connect to mongoDB
+require("./model/mongo.js")()
 
 // helping express work with json
 server.use(express.json());
